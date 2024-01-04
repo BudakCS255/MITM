@@ -88,7 +88,7 @@
         <option value="Case003">Case003</option>
     </select>
     <input type="submit" name="view_images" value="View Images">
-    <input type="submit" name="download_button" value="Download Images" class="download-link" id="download_zip" />
+    <input type="submit" name="download" value="1" class="download-link" id="download_zip" />
 </form>
 
     <!-- HTML form for MITM Example -->
@@ -148,25 +148,10 @@ if ($conn->connect_error) {
 }
 
 // Check if the download GET parameter is set
-if (isset($_GET['download_button']) && isset($_GET['folder'])) {
+if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
     
-    // Database configuration
-    $dbHost = 'localhost';
-    $dbUser = 'afnan';
-    $dbPass = 'john_wick_77';
-    $dbName = 'mywebsite_images';
-    $encryptionKey = '123'; // Replace with your actual key
-
-    // Create a database connection
-    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-
-    // Check the connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
     $result = $conn->query($sql);
@@ -227,8 +212,6 @@ if (isset($_GET['download_button']) && isset($_GET['folder'])) {
     } else {
         echo "No images found in $selectedFolder.";
     }
-
-    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
