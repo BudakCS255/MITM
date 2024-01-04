@@ -9,7 +9,7 @@
         }
 
         hr {
-            background-color: black;
+            background-color: blue;
             height: 2px;
             border: none;
             margin: 20px 0; /* adds space above and below the line */
