@@ -181,8 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
         <input type="submit" name="view_images" value="View Images">
     </form>
 
-    <!-- HTML form for "One Example" -->
-    <h1>One Example</h1>
+    <!-- HTML form for "MITM Example" -->
+    <h1>MITM Example</h1>
     <form action="index.php" method="GET">
         <label for="example_folder">Select a folder for example:</label>
         <select name="folder" id="example_folder">
@@ -190,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
             <option value="Case002">Case002</option>
             <option value="Case003">Case003</option>
         </select>
-        <input type="submit" name="one_example" value="One Example">
+        <input type="submit" name="one_example" value="View">
     </form>
 
     <!-- Feedback area for displaying messages -->
