@@ -2,6 +2,25 @@
 <html>
 <head>
     <title>Image Upload and Viewer</title>
+    <style>
+        /* Add your custom styles here */
+        h1, form {
+            margin-bottom: 20px; /* adds space below each heading and form */
+        }
+
+        hr {
+            background-color: black;
+            height: 2px;
+            border: none;
+            margin: 20px 0; /* adds space above and below the line */
+        }
+
+        form {
+            border: 2px solid black;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <!-- HTML form for image upload -->
