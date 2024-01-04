@@ -212,6 +212,8 @@ if (isset($_GET['download']) && $_GET['download'] == "Download Images" && isset(
     } else {
         echo "No images found in $selectedFolder.";
     }
+
+    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
