@@ -100,6 +100,69 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
     $conn->close();
 }
 
+// Check if the server request method is POST for file upload
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Database configuration
+    $dbHost = 'localhost';
+    $dbUser = 'afnan';
+    $dbPass = 'john_wick_77';
+    $dbName = 'mywebsite_images';
+    $encryptionKey = '123'; // Replace with your actual key
+
+    // Create a database connection
+    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+
+    // Check the connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Check if files were uploaded
+    if (isset($_FILES["image"])) {
+        $uploadedFiles = $_FILES["image"];
+        $folder = sanitize_folder($_POST["folder"]); // Sanitize the folder input
+
+        // Loop through the uploaded files
+        foreach ($uploadedFiles["error"] as $key => $error) {
+            // Check for file upload errors
+            if ($error == UPLOAD_ERR_OK) {
+                // Get the image data
+                $imageData = file_get_contents($uploadedFiles["tmp_name"][$key]);
+
+                // Encrypt the image data
+                $encryptedImageData = xor_encrypt_decrypt($imageData, $encryptionKey);
+
+                // Prepare and execute the database insertion
+                $stmt = $conn->prepare("INSERT INTO $folder (images) VALUES (?)");
+                $null = NULL; // This is needed to bind the blob data
+                $stmt->bind_param("b", $null);
+                $stmt->send_long_data(0, $encryptedImageData);
+                $stmt->execute();
+
+                if ($stmt->affected_rows > 0) {
+                    $message = "Image uploaded successfully!";
+                } else {
+                    $message = "Failed to upload the image.";
+                }
+
+                // Close the statement
+                $stmt->close();
+            } else {
+                $message = "File upload error: " . $error;
+            }
+        }
+    } else {
+        $message = "No images were uploaded.";
+    }
+
+    // Close the database connection
+    $conn->close();
+
+    // Redirect back to the index.php with a message
+    header("Location: index.php?message=" . urlencode($message));
+    exit();
+}
+
 // Check if the server request method is GET and view_images is set
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
     // Sanitize the folder input
@@ -179,18 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
             <option value="Case003">Case003</option>
         </select>
         <input type="submit" name="view_images" value="View Images">
-    </form>
-
-    <!-- HTML form for "MITM Example" -->
-    <h1>MITM Example</h1>
-    <form action="index.php" method="GET">
-        <label for="example_folder">Select a folder for example:</label>
-        <select name="folder" id="example_folder">
-            <option value="Case001">Case001</option>
-            <option value="Case002">Case002</option>
-            <option value="Case003">Case003</option>
-        </select>
-        <input type="submit" name="one_example" value="View">
+        <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
     </form>
 
     <!-- Feedback area for displaying messages -->
