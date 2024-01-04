@@ -88,7 +88,7 @@
         <option value="Case003">Case003</option>
     </select>
     <input type="submit" name="view_images" value="View Images">
-    <input type="submit" name="download" value="1" class="download-link" id="download_zip" />
+    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
 </form>
 
     <!-- HTML form for MITM Example -->
