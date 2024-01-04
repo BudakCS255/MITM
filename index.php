@@ -16,26 +16,26 @@ function xor_encrypt_decrypt($data, $key) {
     return $output;
 }
 
+// Database configuration (can be moved to a separate config file)
+$dbHost = 'localhost';
+$dbUser = 'afnan';
+$dbPass = 'john_wick_77';
+$dbName = 'mywebsite_images';
+$encryptionKey = '123'; // Replace with your actual key
+
+// Create a database connection
+$conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 // Check if the download GET parameter is set
 if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
     
-    // Database configuration
-    $dbHost = 'localhost';
-    $dbUser = 'afnan';
-    $dbPass = 'john_wick_77';
-    $dbName = 'mywebsite_images';
-    $encryptionKey = '123'; // Replace with your actual key
-
-    // Create a database connection
-    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-
-    // Check the connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
     $result = $conn->query($sql);
@@ -96,8 +96,6 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
     } else {
         echo "No images found in $selectedFolder.";
     }
-
-    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
@@ -208,6 +206,35 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
 
     $conn->close();
 }
+
+// Check if the server request method is GET and one_example is set
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['one_example'])) {
+    // Sanitize the folder input
+    $selectedFolder = sanitize_folder($_GET['folder']);
+
+    // Query to retrieve encrypted image data from the selected folder table
+    $sql = "SELECT id, images FROM $selectedFolder";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Output the images without decrypting
+        while ($row = $result->fetch_assoc()) {
+            $imageId = $row["id"];
+            $encryptedImageData = $row["images"];
+
+            $base64Image = base64_encode($encryptedImageData);
+            echo "<div class='image-item'>";
+            echo "<h2>Image $imageId</h2>";
+            echo "<img src='data:image/jpeg;base64,$base64Image' alt='Encrypted Image $imageId'>";
+            echo "</div>";
+        }
+    } else {
+        echo "No images found in $selectedFolder.";
+    }
+}
+
+// Close the database connection
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -216,42 +243,54 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
     <title>Image Upload and Viewer</title>
 </head>
 <body>
-    <!-- HTML form for image upload -->
-    <h1>Upload Images</h1>
-    <form action="index.php" method="POST" enctype="multipart/form-data">
-        <label for="image">Choose image(s) to upload:</label>
-        <input type="file" name="image[]" id="image" accept="image/*" multiple>
-        <br>
-        <label for="folder">Select a folder:</label>
-        <select name="folder" id="folder">
-            <option value="Case001">Case001</option>
-            <option value="Case002">Case002</option>
-            <option value="Case003">Case003</option>
-        </select>
-        <br>
-        <input type="submit" value="Upload">
-    </form>
+<!-- HTML form for image upload -->
+<h1>Upload Images</h1>
+<form action="index.php" method="POST" enctype="multipart/form-data">
+    <label for="image">Choose image(s) to upload:</label>
+    <input type="file" name="image[]" id="image" accept="image/*" multiple>
+    <br>
+    <label for="folder">Select a folder:</label>
+    <select name="folder" id="folder">
+        <option value="Case001">Case001</option>
+        <option value="Case002">Case002</option>
+        <option value="Case003">Case003</option>
+    </select>
+    <br>
+    <input type="submit" value="Upload">
+</form>
 
-    <!-- HTML form for image viewing -->
-    <h1>View Images</h1>
+<!-- HTML form for image viewing -->
+<h1>View Images</h1>
+<form action="index.php" method="GET">
+    <label for="view_folder">Select a folder to view images:</label>
+    <select name="folder" id="view_folder">
+        <option value="Case001">Case001</option>
+        <option value="Case002">Case002</option>
+        <option value="Case003">Case003</option>
+    </select>
+    <input type="submit" name="view_images" value="View Images">
+    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
+</form>
+
+    <!-- HTML form for One Example - View Encrypted Images -->
+    <h1>One Example - View Encrypted Images</h1>
     <form action="index.php" method="GET">
-        <label for="view_folder">Select a folder to view images:</label>
-        <select name="folder" id="view_folder">
+        <label for="one_example_folder">Select a folder to view encrypted images:</label>
+        <select name="folder" id="one_example_folder">
             <option value="Case001">Case001</option>
             <option value="Case002">Case002</option>
             <option value="Case003">Case003</option>
         </select>
-        <input type="submit" name="view_images" value="View Images">
-        <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
+        <input type="submit" name="one_example" value="View Encrypted Images">
     </form>
 
-    <!-- Feedback area for displaying messages -->
-    <div id="upload-feedback">
-        <?php
-        if (isset($_GET['message'])) {
-            echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
-        }
-        ?>
-    </div>
+<!-- Feedback area for displaying messages -->
+<div id="upload-feedback">
+    <?php
+    if (isset($_GET['message'])) {
+        echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
+    }
+    ?>
+</div>
 </body>
 </html>
