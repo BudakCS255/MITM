@@ -20,6 +20,14 @@
             padding: 15px;
             margin-bottom: 20px;
         }
+
+        img {
+            max-width: 100%;  /* Limits image width to the width of its container */
+            max-height: 400px; /* Set a maximum height */
+            object-fit: cover; /* This ensures the aspect ratio is maintained */
+            display: block;    /* To enable margin auto to work */
+            margin: 10px auto; /* Adds margin and centers the image */
+        }
     </style>
 </head>
 <body>
