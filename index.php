@@ -51,11 +51,12 @@
 
         /* Image Styles */
         img {
-            display: block;
             max-width: 100%;
-            height: auto;
-            margin: 20px auto; /* Adds a gap above and below each image */
-            border-bottom: 1px solid black; /* Adds a line below each image */
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+            margin: 20px auto;
+            border-bottom: 2px solid black;
         }
     </style>
 </head>
