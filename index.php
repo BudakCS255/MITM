@@ -76,8 +76,8 @@
     <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
 </form>
 
-    <!-- HTML form for One Example - View Encrypted Images -->
-    <h1>One Example - View Encrypted Images</h1>
+    <!-- HTML form for MITM Example -->
+    <h1>MITM Example</h1>
     <form action="index.php" method="GET">
         <label for="one_example_folder">Select a folder to view encrypted images:</label>
         <select name="folder" id="one_example_folder">
