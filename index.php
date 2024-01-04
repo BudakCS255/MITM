@@ -1,3 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload and Viewer</title>
+</head>
+<body>
+<!-- HTML form for image upload -->
+<h1>Upload Images</h1>
+<form action="index.php" method="POST" enctype="multipart/form-data">
+    <label for="image">Choose image(s) to upload:</label>
+    <input type="file" name="image[]" id="image" accept="image/*" multiple>
+    <br>
+    <label for="folder">Select a folder:</label>
+    <select name="folder" id="folder">
+        <option value="Case001">Case001</option>
+        <option value="Case002">Case002</option>
+        <option value="Case003">Case003</option>
+    </select>
+    <br>
+    <input type="submit" value="Upload">
+</form>
+
+<!-- HTML form for image viewing -->
+<h1>View Images</h1>
+<form action="index.php" method="GET">
+    <label for="view_folder">Select a folder to view images:</label>
+    <select name="folder" id="view_folder">
+        <option value="Case001">Case001</option>
+        <option value="Case002">Case002</option>
+        <option value="Case003">Case003</option>
+    </select>
+    <input type="submit" name="view_images" value="View Images">
+    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
+</form>
+
+    <!-- HTML form for One Example - View Encrypted Images -->
+    <h1>One Example - View Encrypted Images</h1>
+    <form action="index.php" method="GET">
+        <label for="one_example_folder">Select a folder to view encrypted images:</label>
+        <select name="folder" id="one_example_folder">
+            <option value="Case001">Case001</option>
+            <option value="Case002">Case002</option>
+            <option value="Case003">Case003</option>
+        </select>
+        <input type="submit" name="one_example" value="View Encrypted Images">
+    </form>
+
+<!-- Feedback area for displaying messages -->
+<div id="upload-feedback">
+    <?php
+    if (isset($_GET['message'])) {
+        echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
+    }
+    ?>
+</div>
+</body>
+</html>
+
 <?php
 // Function to sanitize the folder name input
 function sanitize_folder($folder) {
@@ -236,61 +294,3 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['one_example'])) {
 // Close the database connection
 $conn->close();
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Image Upload and Viewer</title>
-</head>
-<body>
-<!-- HTML form for image upload -->
-<h1>Upload Images</h1>
-<form action="index.php" method="POST" enctype="multipart/form-data">
-    <label for="image">Choose image(s) to upload:</label>
-    <input type="file" name="image[]" id="image" accept="image/*" multiple>
-    <br>
-    <label for="folder">Select a folder:</label>
-    <select name="folder" id="folder">
-        <option value="Case001">Case001</option>
-        <option value="Case002">Case002</option>
-        <option value="Case003">Case003</option>
-    </select>
-    <br>
-    <input type="submit" value="Upload">
-</form>
-
-<!-- HTML form for image viewing -->
-<h1>View Images</h1>
-<form action="index.php" method="GET">
-    <label for="view_folder">Select a folder to view images:</label>
-    <select name="folder" id="view_folder">
-        <option value="Case001">Case001</option>
-        <option value="Case002">Case002</option>
-        <option value="Case003">Case003</option>
-    </select>
-    <input type="submit" name="view_images" value="View Images">
-    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
-</form>
-
-    <!-- HTML form for One Example - View Encrypted Images -->
-    <h1>One Example - View Encrypted Images</h1>
-    <form action="index.php" method="GET">
-        <label for="one_example_folder">Select a folder to view encrypted images:</label>
-        <select name="folder" id="one_example_folder">
-            <option value="Case001">Case001</option>
-            <option value="Case002">Case002</option>
-            <option value="Case003">Case003</option>
-        </select>
-        <input type="submit" name="one_example" value="View Encrypted Images">
-    </form>
-
-<!-- Feedback area for displaying messages -->
-<div id="upload-feedback">
-    <?php
-    if (isset($_GET['message'])) {
-        echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
-    }
-    ?>
-</div>
-</body>
-</html>
