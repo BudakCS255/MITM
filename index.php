@@ -149,7 +149,7 @@ if ($conn->connect_error) {
 }
 
 // Check if the download GET parameter is set
-if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
+if (isset($_GET['download_button']) && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
     
