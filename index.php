@@ -151,6 +151,21 @@ if ($conn->connect_error) {
 if (isset($_GET['download']) && $_GET['download'] == "Download Images" && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
+
+    // Database configuration
+    $dbHost = 'localhost';
+    $dbUser = 'afnan';
+    $dbPass = 'john_wick_77';
+    $dbName = 'mywebsite_images';
+    $encryptionKey = '123'; // Replace with your actual key
+
+    // Create a database connection
+    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+
+    // Check the connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
     
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
