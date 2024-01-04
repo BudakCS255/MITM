@@ -87,7 +87,6 @@
         <option value="Case002">Case002</option>
         <option value="Case003">Case003</option>
     </select>
-    <input type="hidden" name="download" value="1"> <!-- Add this hidden input field -->
     <input type="submit" name="view_images" value="View Images">
     <input type="submit" name="download_button" value="Download Images" class="download-link" id="download_zip" />
 </form>
