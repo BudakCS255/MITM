@@ -148,25 +148,11 @@ if ($conn->connect_error) {
 }
 
 // Check if the download GET parameter is set
+// Check if the download GET parameter is set
 if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
 
-    // Database configuration
-    $dbHost = 'localhost';
-    $dbUser = 'afnan';
-    $dbPass = 'john_wick_77';
-    $dbName = 'mywebsite_images';
-    $encryptionKey = '123'; // Replace with your actual key
-
-    // Create a database connection
-    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-
-    // Check the connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
     $result = $conn->query($sql);
@@ -175,7 +161,7 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
         // Create a temporary directory for storing images
         $tempDir = sys_get_temp_dir() . '/' . uniqid('images_') . '/';
         if (!mkdir($tempDir) && !is_dir($tempDir)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
+            die("Failed to create a temporary directory.");
         }
 
         while ($row = $result->fetch_assoc()) {
@@ -187,7 +173,9 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
 
             // Save the decrypted image to the temporary directory
             $imageFileName = $tempDir . 'image_' . $imageId . '.jpg';
-            file_put_contents($imageFileName, $decryptedImageData);
+            if (file_put_contents($imageFileName, $decryptedImageData) === false) {
+                die("Failed to save the decrypted image.");
+            }
         }
 
         // Create a ZIP file containing all images
@@ -198,20 +186,20 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
             foreach ($files as $file) {
                 // Skip directories (they would be added automatically)
                 if (!$file->isDir()) {
-                    // Get real and relative path for current file
+                    // Get real and relative path for the current file
                     $filePath = $file->getRealPath();
                     $relativePath = substr($filePath, strlen($tempDir));
 
-                    // Add current file to archive
+                    // Add the current file to the archive
                     $zip->addFile($filePath, $relativePath);
                 }
             }
-            // Zip archive will be created only after closing object
+            // Zip archive will be created only after closing the object
             $zip->close();
 
             // Send the ZIP file for download
             header('Content-Type: application/zip');
-            header('Content-Disposition: attachment; filename="'.basename($zipFileName).'"');
+            header('Content-Disposition: attachment; filename="' . basename($zipFileName) . '"');
             header('Content-Length: ' . filesize($zipFileName));
             flush();
             readfile($zipFileName);
@@ -219,16 +207,15 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
             // Clean up temporary files and directory
             array_map('unlink', glob("$tempDir*.*"));
             rmdir($tempDir);
-            unlink($zipFileName);
+
+            // Exit to prevent further output
             exit();
         } else {
-            echo "Failed to create the ZIP file.";
+            die("Failed to create the ZIP file.");
         }
     } else {
-        echo "No images found in $selectedFolder.";
+        die("No images found in $selectedFolder.");
     }
-
-    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
