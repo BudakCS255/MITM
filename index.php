@@ -115,7 +115,6 @@
 </html>
 
 <?php
-ob_end_clean();
 // Function to sanitize the folder name input
 function sanitize_folder($folder) {
     return filter_var($folder, FILTER_SANITIZE_STRING);
