@@ -63,7 +63,7 @@
 </head>
 <body>
 <!-- HTML form for image upload -->
-<h1>Upload Images</h1>
+<h1>Upload Imag</h1>
 <form action="index.php" method="POST" enctype="multipart/form-data">
     <label for="image">Choose image(s) to upload:</label>
     <input type="file" name="image[]" id="image" accept="image/*" multiple>
@@ -151,7 +151,7 @@ if ($conn->connect_error) {
 if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
-
+    
     // Database configuration
     $dbHost = 'localhost';
     $dbUser = 'afnan';
@@ -166,7 +166,7 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    
+
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
     $result = $conn->query($sql);
@@ -227,6 +227,8 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
     } else {
         echo "No images found in $selectedFolder.";
     }
+
+    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
