@@ -56,6 +56,7 @@
             object-fit: cover;
             display: block;
             margin: 20px auto;
+            padding-bottom: 20px;
             border-bottom: 2px solid black;
         }
     </style>
