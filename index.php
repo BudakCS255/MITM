@@ -3,30 +3,46 @@
 <head>
     <title>Image Upload and Viewer</title>
     <style>
-        /* Add your custom styles here */
+        /* CSS Resets and Basic Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            /* Adjust styles for smaller screens */
+        }
+
+        /* Styling Headings, Forms, and Buttons */
         h1, form {
-            margin-bottom: 20px; /* adds space below each heading and form */
-        }
-
-        hr {
-            background-color: black;
-            height: 2px;
-            border: none;
-            margin: 20px 0; /* adds space above and below the line */
-        }
-
-        form {
-            border: 2px solid black;
-            padding: 15px;
             margin-bottom: 20px;
         }
 
+        input[type="submit"], button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Image Styles */
         img {
-            max-width: 100%;  /* Limits image width to the width of its container */
-            max-height: 400px; /* Set a maximum height */
-            object-fit: cover; /* This ensures the aspect ratio is maintained */
-            display: block;    /* To enable margin auto to work */
-            margin: 10px auto; /* Adds margin and centers the image */
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+            margin: 10px auto;
         }
     </style>
 </head>
