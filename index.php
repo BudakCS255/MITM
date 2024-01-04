@@ -16,7 +16,7 @@
         }
 
         form {
-            border: 2px blue;
+            border: 2px solid black;
             padding: 15px;
             margin-bottom: 20px;
         }
