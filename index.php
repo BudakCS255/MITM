@@ -160,7 +160,7 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
         // Create a temporary directory for storing images
         $tempDir = sys_get_temp_dir() . '/' . uniqid('images_') . '/';
         if (!mkdir($tempDir) && !is_dir($tempDir)) {
-            die("Failed to create a temporary directory.");
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
         }
 
         while ($row = $result->fetch_assoc()) {
@@ -198,7 +198,7 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
 
             // Send the ZIP file for download
             header('Content-Type: application/zip');
-            header('Content-Disposition: attachment; filename="' . basename($zipFileName) . '"');
+            header('Content-Disposition: attachment; filename="' .basename($zipFileName).'"');
             header('Content-Length: ' . filesize($zipFileName));
             flush();
             readfile($zipFileName);
@@ -206,15 +206,16 @@ if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])
             // Clean up temporary files and directory
             array_map('unlink', glob("$tempDir*.*"));
             rmdir($tempDir);
-
-            // Exit to prevent further output
+            unlink($zipFileName);
             exit();
         } else {
-            die("Failed to create the ZIP file.");
+            echo "Failed to create the ZIP file.";
         }
     } else {
-        die("No images found in $selectedFolder.");
+        echo "No images found in $selectedFolder.";
     }
+
+    $conn->close();
 }
 
 // Check if the server request method is POST for file upload
