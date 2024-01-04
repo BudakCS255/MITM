@@ -88,7 +88,7 @@
         <option value="Case003">Case003</option>
     </select>
     <input type="submit" name="view_images" value="View Images">
-    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
+    <input type="submit" name="download" value="1" class="download-link" id="download_zip" />
 </form>
 
     <!-- HTML form for MITM Example -->
@@ -148,7 +148,7 @@ if ($conn->connect_error) {
 }
 
 // Check if the download GET parameter is set
-if (isset($_GET['download']) && $_GET['download'] == "Download Images" && isset($_GET['folder'])) {
+if (isset($_GET['download']) && $_GET['download'] == 1 && isset($_GET['folder'])) {
     // Sanitize the folder input
     $selectedFolder = sanitize_folder($_GET['folder']);
 
