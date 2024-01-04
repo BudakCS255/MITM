@@ -63,7 +63,7 @@
 </head>
 <body>
 <!-- HTML form for image upload -->
-<h1>Upload Imag</h1>
+<h1>Upload Images</h1>
 <form action="index.php" method="POST" enctype="multipart/form-data">
     <label for="image">Choose image(s) to upload:</label>
     <input type="file" name="image[]" id="image" accept="image/*" multiple>
@@ -87,8 +87,9 @@
         <option value="Case002">Case002</option>
         <option value="Case003">Case003</option>
     </select>
+    <input type="hidden" name="download" value="1"> <!-- Add this hidden input field -->
     <input type="submit" name="view_images" value="View Images">
-    <input type="submit" name="download" value="Download Images" class="download-link" id="download_zip" />
+    <input type="submit" name="download_button" value="Download Images" class="download-link" id="download_zip" />
 </form>
 
     <!-- HTML form for MITM Example -->
