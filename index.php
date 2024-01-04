@@ -9,14 +9,14 @@
         }
 
         hr {
-            background-color: blue;
+            background-color: black;
             height: 2px;
             border: none;
             margin: 20px 0; /* adds space above and below the line */
         }
 
         form {
-            border: 2px solid black;
+            border: 2px blue;
             padding: 15px;
             margin-bottom: 20px;
         }
