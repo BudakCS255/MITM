@@ -197,8 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['view_images'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    echo '<a name="viewImages"></a>';
-
     // Query to retrieve encrypted image data from the selected folder table
     $sql = "SELECT id, images FROM $selectedFolder";
     $result = $conn->query($sql);
@@ -268,22 +266,11 @@ $conn->close();
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            padding-top: 60px;
         }
 
         /* Responsive Layout */
         @media (max-width: 768px) {
             /* Adjust styles for smaller screens */
-        }
-
-        .header {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background-color: white;
-        z-index: 1000;
-        padding: 10px 0;
-        border-bottom: 1px solid #ddd;
         }
 
         /* Styling Headings, Forms, and Buttons */
@@ -330,7 +317,6 @@ $conn->close();
     </style>
 </head>
 <body>
-<div class="header">
 <!-- HTML form for image upload -->
 <h1>Upload Images</h1>
 <form action="index.php" method="POST" enctype="multipart/form-data">
@@ -349,7 +335,7 @@ $conn->close();
 
 <!-- HTML form for image viewing -->
 <h1>View Images</h1>
-<form action="index.php#viewImages" method="GET">
+<form action="index.php" method="GET">
     <label for="view_folder">Select a folder to view images:</label>
     <select name="folder" id="view_folder">
         <option value="Case001">Case001</option>
@@ -371,6 +357,14 @@ $conn->close();
         </select>
         <input type="submit" name="one_example" value="View Encrypted Images">
     </form>
-    </div>
+
+<!-- Feedback area for displaying messages -->
+<div id="upload-feedback">
+    <?php
+    if (isset($_GET['message'])) {
+        echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
+    }
+    ?>
+</div>
 </body>
 </html>
