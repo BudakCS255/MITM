@@ -266,11 +266,22 @@ $conn->close();
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            padding-top: 60px;
         }
 
         /* Responsive Layout */
         @media (max-width: 768px) {
             /* Adjust styles for smaller screens */
+        }
+
+        .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: white;
+        z-index: 1000;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
         }
 
         /* Styling Headings, Forms, and Buttons */
